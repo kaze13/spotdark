@@ -1,0 +1,18 @@
+{
+  "name": "nodeWebkit",
+  "version": "0.0.0",
+  "authors": [
+    "Rey <chen_m@worksap.co.jp>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.2"
+  }
+}
