@@ -4,9 +4,9 @@
 </head>
 <body ng-controller="mainCtrl">
 	<input type="search" ng-model="keyword" ng-keypress="keypress($event)"/>	
-	<div>
-		<div ng-repeat="item in searchResult">{{item}}</div>
-	</div>
+	<select>
+		<option ng-repeat="item in searchResult" value="{{$index}}">{{item}}</option>
+	</select>
 </body>
 <script src="bower_components/angularjs/angular.min.js"></script>
 <script src="js/main.js"></script>
