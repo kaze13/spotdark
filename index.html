@@ -1,11 +1,13 @@
-<html>
+<html ng-app="mainApp">
 <head>
-	<script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-	<link rel="import" href="elements/test-element.html">
 	<title> Menu </title>
 </head>
-<body>
-	<test-element></test-element>
+<body ng-controller="mainCtrl">
+	<input type="search" ng-model="keyword" ng-keypress="keypress($event)"/>	
+	<div>
+		<div ng-repeat="item in searchResult">{{item}}</div>
+	</div>
 </body>
+<script src="bower_components/angularjs/angular.min.js"></script>
 <script src="js/main.js"></script>
 </html>

@@ -1,20 +1,33 @@
-(function() {
-	// var child_process = require('child_process');
+var mainApp = angular.module('mainApp', []);
 
-	// var child = child_process.execFile('/etc/alternatives/locate', ['.', '-l', '10'], {}, function(err, stdout, stderr) {
-	// 	if (err) {
-	// 		throw err;
-	// 	} else {
+mainApp.controller('mainCtrl', function($scope) {
 
-	// 	}
-	// })
+	$scope.keypress = function(event) {
+		if (event.keyCode === 13) {
+			console.log('enter pressed;');
+			$scope.searchFile($scope.keyword);
+		}
+	}
 
-	// child.stdout.on('data', function(data) {
-	// 	console.log('stdout: ' + data);
-	// 	var result = data.split('\n');
-	// 	console.log('result array:' + result);
-	// 	document.write(result);
-	// });
+	$scope.searchFile = function(keyword) {
+		console.warn(keyword);
+		var child_process = require('child_process');
+		var child = child_process.execFile('/etc/alternatives/locate', [keyword, '-l', '10'], {}, function(err, stdout, stderr) {
+			if (err) {
+				throw err;
+			} else {
+				var result = stdout.split('\n');
+				$scope.searchResult = result;
+				console.log('$scope.searchResult:' + $scope.searchResult);
+			}
+		})
 
-	
-})()
+		// child.stdout.once('data', function(data) {
+		// 	var result = data.split('\n');
+		// 	$scope.searchResult = result;
+		// 	console.log('result array:' + $scope.searchResult);
+		// });
+	}
+
+
+})
