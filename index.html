@@ -1,13 +1,19 @@
 <html ng-app="mainApp">
+
 <head>
-	<title> Menu </title>
+    <title> Menu </title>
 </head>
+
 <body ng-controller="mainCtrl">
-	<input type="search" ng-model="keyword" ng-keypress="keypress($event)"/>	
-	<select>
-		<option ng-repeat="item in searchResult" value="{{$index}}">{{item}}</option>
-	</select>
+    <div>
+        <input type="search" ng-model="keyword" ng-keypress="inputKeypress($event)" />
+        <div>
+            <div ng-repeat="item in searchResult">{{item}} {{$index === selectedIndex ? "selected" : "no"}}</div>
+        </div>
+    </div>
+
 </body>
 <script src="bower_components/angularjs/angular.min.js"></script>
 <script src="js/main.js"></script>
+
 </html>
