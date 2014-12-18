@@ -2,16 +2,23 @@ var mainApp = angular.module('mainApp', []);
 
 mainApp.controller('mainCtrl', function($scope) {
     this.limit_ = 10;
+    var $resultBox_ = document.querySelector('#result-box').focus();
+    var $searchInput_ = document.querySelector('#search-input').focus();
     $scope.selectedIndex = null;
     $scope.inputKeyup = function(event) {
         console.log("key pressed at input:" + event.keyCode);
+
+        if (event.keyCode >= 48 && event.keyCode <= 90) {
+            $scope.searchFile($scope.keyword);
+
+        }
         // enter
         if (event.keyCode === 13) {
             $scope.searchFile($scope.keyword);
         }
         // down arrow
         if (event.keyCode === 40) {
-            document.querySelector('#result-box').focus();
+            $resultBox_.focus();
             selectSearchResult(0);
         }
     }
@@ -27,6 +34,10 @@ mainApp.controller('mainCtrl', function($scope) {
         }
         if (event.keyCode === 38) {
             moveSelectCursorUp();
+        }
+        if (event.keyCode === 27) {
+            $searchInput_.focus();
+
         }
     }
 
