@@ -6,9 +6,10 @@
 
 <body ng-controller="mainCtrl">
     <div>
-        <input type="search" ng-model="keyword" ng-keypress="inputKeypress($event)" />
-        <div>
-            <div ng-repeat="item in searchResult">{{item}} {{$index === selectedIndex ? "selected" : "no"}}</div>
+        <input id="search-input" type="search" ng-model="keyword" ng-keyup="inputKeyup($event)" />
+        <div id="result-box" tabindex="0" ng-keyup="searchResultKeypress($event)">
+            <div ng-repeat="item in searchResult">{{item}} {{$index === selectedIndex ? "selected" : "no"}}
+            </div>
         </div>
     </div>
 

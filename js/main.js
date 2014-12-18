@@ -3,19 +3,22 @@ var mainApp = angular.module('mainApp', []);
 mainApp.controller('mainCtrl', function($scope) {
     this.limit_ = 10;
     $scope.selectedIndex = null;
-    $scope.inputKeypress = function(event) {
+    $scope.inputKeyup = function(event) {
+        console.log("key pressed at input:" + event.keyCode);
         // enter
         if (event.keyCode === 13) {
             $scope.searchFile($scope.keyword);
         }
         // down arrow
         if (event.keyCode === 40) {
-        	console.log("arrow down pressed in input");
+            document.querySelector('#result-box').focus();
             selectSearchResult(0);
         }
     }
 
     $scope.searchResultKeypress = function(event) {
+        console.log("key pressed at result box:" + event.keyCode);
+
         if (event.keyCode === 13) {
             openFile();
         }
@@ -35,9 +38,17 @@ mainApp.controller('mainCtrl', function($scope) {
         var child = child_process.exec('locate ' + keyword + ' -l 10', {}, function(err, stdout, stderr) {
             $scope.$apply(function() {
                 if (err) {
+                    $scope.searchResult = [];
                     throw err;
-                } else {
-                    var result = stdout.split('\n');
+                }
+                if (stderr) {
+                    $scope.searchResult = [];
+                    console.error(stderr);
+                }
+                if (stdout) {
+                    var result = stdout.split('\n').filter(function(item) {
+                        return item.length !== 0
+                    });
                     $scope.searchResult = result;
                     console.log('$scope.searchResult:' + $scope.searchResult);
 
@@ -51,26 +62,30 @@ mainApp.controller('mainCtrl', function($scope) {
     }
 
     function moveSelectCursorDown() {
-        if ($scope.selectedIndex === this.limit_ - 1) {
+        if ($scope.selectedIndex === $scope.searchResult.length - 1) {
             $scope.selectedIndex = 0;
         } else {
             $scope.selectedIndex = $scope.selectedIndex + 1;
         }
+        selectSearchResult($scope.selectedIndex);
     }
 
     function moveSelectCursorUp() {
         if ($scope.selectedIndex === 0) {
-            $scope.selectedIndex = this.limit_ - 1;
+            $scope.selectedIndex = $scope.searchResult.length - 1;
         } else {
             $scope.selectedIndex = $scope.selectedIndex - 1;
         }
+        selectSearchResult($scope.selectedIndex);
     }
 
     function selectSearchResult(index) {
-        $scope.selectedIndex = index;
-        $scope.selectedItem = {
-            index: $scope.searchResult[index]
+        if (!$scope.searchResult || $scope.searchResult.length === 0) {
+            return;
         }
+        $scope.selectedIndex = index;
+        $scope.selectedItem = $scope.searchResult[index];
+        console.log("item:" + $scope.searchResult[index] + " selected at index: " + index);
     }
 
 
