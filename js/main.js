@@ -2,15 +2,14 @@ var mainApp = angular.module('mainApp', []);
 
 mainApp.controller('mainCtrl', function($scope) {
     this.limit_ = 10;
-    var $resultBox_ = document.querySelector('#result-box').focus();
-    var $searchInput_ = document.querySelector('#search-input').focus();
+    var $resultBox_ = document.querySelector('#result-box');
+    var $searchInput_ = document.querySelector('#search-input');
     $scope.selectedIndex = null;
     $scope.inputKeyup = function(event) {
         console.log("key pressed at input:" + event.keyCode);
 
         if (event.keyCode >= 48 && event.keyCode <= 90) {
             $scope.searchFile($scope.keyword);
-
         }
         // enter
         if (event.keyCode === 13) {
@@ -46,8 +45,8 @@ mainApp.controller('mainCtrl', function($scope) {
     $scope.searchFile = function(keyword) {
         console.warn(keyword);
         var child_process = require('child_process');
-        var child = child_process.exec('locate ' + keyword + ' -l 10', {}, function(err, stdout, stderr) {
-            $scope.$apply(function() {
+        // var child = child_process.exec('\'/usr/bin/locate ' + keyword + ' -l 10\'', {}, function(err, stdout, stderr) {
+        var child = child_process.execFile('/usr/bin/locate', ['-l', '10', keyword], {}, function(err, stdout, stderr) {
                 if (err) {
                     $scope.searchResult = [];
                     throw err;
@@ -62,9 +61,9 @@ mainApp.controller('mainCtrl', function($scope) {
                     });
                     $scope.searchResult = result;
                     console.log('$scope.searchResult:' + $scope.searchResult);
-
+                    $scope.$apply();
                 }
-            })
+
         })
     }
 
